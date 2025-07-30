@@ -1,95 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Elva's Garden</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #fef6f9;
-      font-family: 'Segoe UI', sans-serif;
-      overflow: hidden;
-    }
-
-    h1 {
-      text-align: center;
-      margin-top: 20vh;
-      font-size: 3em;
-      opacity: 0;
-      animation: fadeIn 2s ease-in-out forwards;
-    }
-
-    p {
-      text-align: center;
-      font-size: 1.2em;
-      color: #555;
-      animation: type 3s steps(20) forwards;
-      overflow: hidden;
-      white-space: nowrap;
-      border-right: 2px solid pink;
-      width: 0;
-      margin: 20px auto;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
-    @keyframes type {
-      from { width: 0; }
-      to { width: 240px; }
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-    }
-  </style>
+  <meta charset="UTF-8" /> <!-- 设置字符编码为UTF-8，支持中文 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- 响应式布局 -->
+  <title>Elva's Garden</title> <!-- 网页标题 -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- 页面主标题 -->
   <h1>Elva's Garden</h1>
-  <p>风吹过心上的湖泊，你就是泛起的涟漪。</p>
+  <!-- 打字机效果显示区 -->
+  <p id="quote"></p>
+  <!-- 樱花飘落canvas -->
   <canvas id="petals"></canvas>
 
-  <script>
-    // 简单樱花飘落特效
-    const canvas = document.getElementById("petals");
-    const ctx = canvas.getContext("2d");
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    const petals = [];
-    for (let i = 0; i < 30; i++) {
-      petals.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        r: Math.random() * 3 + 2,
-        d: Math.random() * 1
-      });
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "rgba(255,192,203,0.8)";
-      petals.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
-        ctx.fill();
-        p.y += p.d;
-        p.x += Math.sin(p.y * 0.01);
-        if (p.y > height) {
-          p.y = 0;
-          p.x = Math.random() * width;
-        }
-      });
-      requestAnimationFrame(draw);
-    }
-
-    draw();
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>

@@ -1,0 +1,40 @@
+/* 页面基础样式 */
+body {
+  margin: 0;
+  padding: 0;
+  background: #fef6f9; /* 柔和粉色背景 */
+  font-family: 'Segoe UI', sans-serif; /* 使用无衬线字体 */
+  overflow: hidden; /* 防止滚动条出现 */
+}
+
+/* 主标题样式，带有淡入动画 */
+h1 {
+  text-align: center; /* 居中 */
+  margin-top: 20vh;   /* 距顶部20%视口高度 */
+  font-size: 3em;     /* 大号字体 */
+  opacity: 0;         /* 初始透明 */
+  animation: fadeIn 2s ease-in-out forwards; /* 淡入动画 */
+}
+
+/* 打字机文字样式 */
+p {
+  text-align: center;     /* 居中 */
+  font-size: 1.2em;       /* 稍大字体 */
+  color: #555;            /* 深灰色 */
+  overflow: hidden;       /* 隐藏溢出 */
+  white-space: nowrap;    /* 不换行 */
+  margin: 20px auto;      /* 上下间距，水平居中 */
+}
+
+/* 标题淡入关键帧动画 */
+@keyframes fadeIn {
+  to { opacity: 1; } /* 动画结束时完全不透明 */
+}
+
+/* 樱花canvas样式，固定在页面底层 */
+canvas {
+  position: fixed;      /* 固定定位 */
+  top: 0;
+  left: 0;
+  pointer-events: none; /* 允许鼠标事件穿透，不影响页面交互 */
+}
