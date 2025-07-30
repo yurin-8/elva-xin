@@ -47,13 +47,17 @@ draw(); // 启动动画
 // =============================
 
 const quote = "风吹过心上的湖泊，你就是泛起的涟漪。"; // 要显示的句子
-let i = 0; // 当前字符索引
+let i = 0; // 当前字符索引，“打到第几个字”
 
 // 打字机主函数，逐字显示quote内容
 function typeWriter() {
   if (i < quote.length) {
     document.getElementById("quote").innerHTML += quote.charAt(i++); // 追加下一个字符
-    setTimeout(typeWriter, 120); // 每120ms显示下一个字
+    if (i === 8){
+      setTimeout(typeWriter, 1000); // 如果打到第7个字，延时500ms再继续
+    } else {
+        setTimeout(typeWriter, 100); // 每120ms显示下一个字
+    }
   }
 }
 
