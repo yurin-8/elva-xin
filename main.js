@@ -46,19 +46,71 @@ draw(); // 启动动画
 // 打字机效果
 // =============================
 
-const quote = "风吹过心上的湖泊，你就是泛起的涟漪。"; // 要显示的句子
-let i = 0; // 当前字符索引，“打到第几个字”
 
-// 打字机主函数，逐字显示quote内容
-function typeWriter() {
-  if (i < quote.length) {
-    document.getElementById("quote").innerHTML += quote.charAt(i++); // 追加下一个字符
-    if (i === 8){
-      setTimeout(typeWriter, 1000); // 如果打到第7个字，延时500ms再继续
-    } else {
-        setTimeout(typeWriter, 100); // 每120ms显示下一个字
+// 打字机主函数，支持递归与回调
+function typeWriter(
+  text,
+  interval,
+  defaultSpecialPause,
+  defaultSpecialPauseAt,
+  uniquePauseAt,
+  i = 0,
+  onFinish = () => {}
+) {
+  if (i === 0) {
+    document.getElementById("quote").innerText = ""; // 清空文字区域
+  }
+
+  if (i < text.length) {
+    document.getElementById("quote").innerText += text.charAt(i);
+
+    let delay = interval;
+    if (uniquePauseAt && i in uniquePauseAt) {
+      delay = uniquePauseAt[i];
+    } else if (defaultSpecialPause && defaultSpecialPauseAt && defaultSpecialPauseAt.includes(i)) {
+      delay = defaultSpecialPause;
     }
+
+    setTimeout(() => {
+      typeWriter(
+        text,
+        interval,
+        defaultSpecialPause,
+        defaultSpecialPauseAt,
+        uniquePauseAt,
+        i + 1,
+        onFinish
+      );
+    }, delay);
+  } else {
+    setTimeout(onFinish, 1500); // 打完之后，1.5 秒后执行下一句
   }
 }
 
-typeWriter(); // 启动打字机效果
+
+let configList = [];
+let current = 0;
+
+function playAllQuotes() {
+  const cfg = configList[current];
+  typeWriter(
+    cfg.text,
+    cfg.interval,
+    cfg.defaultSpecialPause,
+    cfg.defaultSpecialPauseAt || [],
+    cfg.uniquePauseAt || {},
+    0,
+    () => {
+      current = (current + 1) % configList.length; // 下一句（循环）
+      playAllQuotes(); // 递归播放
+    }
+  );
+}
+
+fetch("quotes.yml")
+  .then(res => res.text()) // 注意：YAML 是纯文本
+  .then(ymlText => {
+    const data = jsyaml.load(ymlText); // YAML 转 JS 对象
+    configList = data;
+    playAllQuotes();
+  });

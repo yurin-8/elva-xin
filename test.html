@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Typewriter Test</title>
+  <style>
+    #quote { font-size: 1.5em; margin: 2em; white-space: pre-line; }
+  </style>
+</head>
+<body>
+  <p id="quote"></p>
+  <script>
+    // 全局索引
+    let i = 0;
+
+    // 你的 typeWriter 函数
+    function typeWriter(text, interval, defaultSpecialPause, defaultSpecialPauseAt, uniquePauseAt) {
+        const quote = text;
+        if (i < quote.length) {
+            document.getElementById("quote").innerHTML += quote.charAt(i++);
+            if (uniquePauseAt && uniquePauseAt[i] != null) {
+                setTimeout(() => typeWriter(text, interval, defaultSpecialPause, defaultSpecialPauseAt, uniquePauseAt), uniquePauseAt[i]);
+            } else if (defaultSpecialPause && defaultSpecialPauseAt && defaultSpecialPauseAt.includes(i)) {
+                setTimeout(() => typeWriter(text, interval, defaultSpecialPause, defaultSpecialPauseAt, uniquePauseAt), defaultSpecialPause);
+            } else {
+                setTimeout(() => typeWriter(text, interval, defaultSpecialPause, defaultSpecialPauseAt, uniquePauseAt), interval);
+            }
+        }
+    }
+
+    // 测试参数（根据你的 YAML 配置）
+    const text = `你是清晨的第一缕阳光，
+温柔地洒在我的心上。
+也是夜晚最后一颗星，
+静静守护着我的梦想。
+在这漫长的时光里，
+有你，便是晴天。`;
+    const interval = 90;
+    const defaultSpecialPause = 800;
+    const defaultSpecialPauseAt = []; // 这里可以填如 [7, 12] 等
+    const uniquePauseAt = { 13: 1200, 28: 1500, 43: 2000 };
+
+    // 启动打字机
+    typeWriter(text, interval, defaultSpecialPause, defaultSpecialPauseAt, uniquePauseAt);
+  </script>
+</body>
+</html>

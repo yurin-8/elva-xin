@@ -1,0 +1,37 @@
+- text: |
+    你是清晨的第一缕阳光，
+    温柔地洒在我的心上。
+    也是夜晚最后一颗星，
+    静静守护着我的梦想。
+    在这漫长的时光里，
+    有你，便是晴天。
+  interval: 90
+  defaulteepcialPause: 800
+  defaultSpecialPauseAt: []
+  uniquePauseAt:
+    13: 1200   # 第一段后多停顿
+    28: 1500   # 第二段后多停顿
+    43: 2000   # 第三段后多停顿
+
+- text: "风吹过心上的湖泊，你就是泛起的涟漪"
+  interval: 100
+  defaultSpecialPause: 500
+  defaultSpecialPauseAt: []
+  uniquePauseAt:
+    7: 1000
+
+- text: |
+    ✨星星躲进云里...
+    你，
+    也躲进了我的梦里...
+  interval: 120
+  defaultSpecialPause: 1600
+  defaultSpecialPauseAt: [9, 10]
+  uniquePauseAt:
+
+- text: "在你眼中，我看见了整个春天"
+  interval: 80
+  defaulteepcialPause: 400
+  defaultSpecialPauseAt: []
+  uniquePauseAt:
+    4: 1000
