@@ -38,3 +38,25 @@ canvas {
   left: 0;
   pointer-events: none; /* 允许鼠标事件穿透，不影响页面交互 */
 }
+
+/* 引用样式，使用 ZCOOL KuaiLe 字体 */
+#quote {
+  font-family: 'ZCOOL KuaiLe', cursive;
+}
+
+#title {
+  font-family: 'ZCOOL QingKe HuangYou', sans-serif;
+  font-size: 3.8em;
+  color: #333;
+  font-weight: normal;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 5px rgba(255, 192, 203, 0.2);
+  animation: fadeIn 2s ease-in-out forwards, floatTitle 4s ease-in-out infinite;
+  opacity: 0; /* 保留这个，否则动画不触发 */
+}
+
+@keyframes floatTitle {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
