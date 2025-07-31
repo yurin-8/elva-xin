@@ -1,3 +1,42 @@
+/* 弹幕样式：极淡灰色，无发光 */
+#bullets {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+.bullet {
+  position: absolute;
+  color: rgba(120,120,120,0.22); /* 稍深一点的极淡灰色 */
+  font-family: 'ZCOOL KuaiLe', 'Segoe UI', sans-serif;
+  font-weight: normal;
+  white-space: nowrap;
+  opacity: 0;
+  animation: bullet-fall 6s linear forwards;
+  pointer-events: none;
+  text-shadow: none;
+  user-select: none;
+}
+@keyframes bullet-fall {
+  0% {
+    transform: translateY(-60px);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    transform: translateY(300px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(350px);
+    opacity: 0;
+  }
+}
 /* 页面基础样式 */
 body {
   margin: 0;

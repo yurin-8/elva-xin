@@ -1,47 +1,130 @@
+<!-- 梦幻弹幕雨实验页面 -->
 <!DOCTYPE html>
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Typewriter Test</title>
+  <title>梦幻弹幕雨实验</title>
+  <!-- 页面样式部分 -->
   <style>
-    #quote { font-size: 1.5em; margin: 2em; white-space: pre-line; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(to bottom, #1a1a2e, #0f3460); /* 渐变背景 */
+      overflow: hidden; /* 隐藏滚动条 */
+      font-family: "Noto Sans SC", sans-serif; /* 中文无衬线字体 */
+    }
+
+    .bullet {
+      position: absolute; /* 绝对定位弹幕 */
+      color: rgba(255, 255, 255, 0.3); /* 更加透明的白色 */
+      white-space: nowrap; /* 不换行 */
+      opacity: 0;
+      animation: fall 6s ease-in-out forwards; /* 下落动画 */
+      pointer-events: none; /* 不影响鼠标事件 */
+      text-shadow: 0 0 8px rgba(255,255,255,0.15); /* 更加淡的发光效果 */
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-60px) rotate(var(--angle));
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        transform: translateY(300px) rotate(var(--angle));
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(350px) rotate(var(--angle));
+        opacity: 0;
+      }
+    }
+
+    .title {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      font-size: 28px;
+      z-index: 0;
+    }
   </style>
 </head>
 <body>
-  <p id="quote"></p>
-  <script>
-    // 全局索引
-    let i = 0;
 
-    // 你的 typeWriter 函数
-    function typeWriter(text, interval, defaultSpecialPause, defaultSpecialPauseAt, uniquePauseAt) {
-        const quote = text;
-        if (i < quote.length) {
-            document.getElementById("quote").innerHTML += quote.charAt(i++);
-            if (uniquePauseAt && uniquePauseAt[i] != null) {
-                setTimeout(() => typeWriter(text, interval, defaultSpecialPause, defaultSpecialPauseAt, uniquePauseAt), uniquePauseAt[i]);
-            } else if (defaultSpecialPause && defaultSpecialPauseAt && defaultSpecialPauseAt.includes(i)) {
-                setTimeout(() => typeWriter(text, interval, defaultSpecialPause, defaultSpecialPauseAt, uniquePauseAt), defaultSpecialPause);
-            } else {
-                setTimeout(() => typeWriter(text, interval, defaultSpecialPause, defaultSpecialPauseAt, uniquePauseAt), interval);
-            }
-        }
-    }
+<!-- 页面主标题 -->
+<div class="title">你是清晨的第一缕阳光，也是夜晚最后的一颗星</div>
 
-    // 测试参数（根据你的 YAML 配置）
-    const text = `你是清晨的第一缕阳光，
-温柔地洒在我的心上。
-也是夜晚最后一颗星，
-静静守护着我的梦想。
-在这漫长的时光里，
-有你，便是晴天。`;
-    const interval = 90;
-    const defaultSpecialPause = 800;
-    const defaultSpecialPauseAt = []; // 这里可以填如 [7, 12] 等
-    const uniquePauseAt = { 13: 1200, 28: 1500, 43: 2000 };
+<script>
+  // 弹幕内容数组
+  const messages = [
+    "你是夜色中的微光",
+    "思念像风，吹过心房",
+    "此刻，有你便是晴天",
+    "梦里有光，是你的模样",
+    "我的心事，随风飘落",
+    "星光不问赶路人",
+    "你是我遥不可及的诗",
+    "温柔了岁月的名字"
+  ];
 
-    // 启动打字机
-    typeWriter(text, interval, defaultSpecialPause, defaultSpecialPauseAt, uniquePauseAt);
-  </script>
+  // 根据窗口大小动态调整弹幕参数
+  function getBulletConfig() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    // 字体范围：小屏小，大屏大
+    let fontMin = 12 + Math.min(w, h) / 120;
+    let fontMax = 18 + Math.min(w, h) / 60;
+    // 密集度：大屏更密集
+    let interval = Math.max(350, 1200 - (w * h) / 4000);
+    return { fontMin, fontMax, interval };
+  }
+
+  // 生成指定范围的随机数
+  function randomBetween(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  // 生成一条弹幕并添加到页面
+  function spawnBullet() {
+    const { fontMin, fontMax } = getBulletConfig();
+    const div = document.createElement("div");
+    div.className = "bullet";
+    div.innerText = messages[Math.floor(Math.random() * messages.length)];
+
+    // 设置弹幕的随机样式
+    const fontSize = randomBetween(fontMin, fontMax);
+    const rotation = randomBetween(-35, 35).toFixed(1) + 'deg';
+    const left = randomBetween(0, window.innerWidth - 100);
+    const top = randomBetween(0, 100);
+    const duration = randomBetween(4, 8); // 动画持续时间
+
+    div.style.fontSize = fontSize + "px";
+    div.style.left = left + "px";
+    div.style.top = top + "px";
+    div.style.setProperty('--angle', rotation);
+    div.style.animationDuration = duration + "s";
+    div.style.opacity = randomBetween(0.18, 0.32); // 更加透明
+
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), duration * 1000);
+  }
+
+  // 定时生成弹幕，间隔动态调整
+  let bulletTimer;
+  function startBullets() {
+    if (bulletTimer) clearInterval(bulletTimer);
+    const { interval } = getBulletConfig();
+    bulletTimer = setInterval(spawnBullet, interval);
+  }
+
+  window.addEventListener('resize', startBullets);
+  startBullets();
+</script>
+
 </body>
 </html>

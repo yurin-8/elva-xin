@@ -41,6 +41,64 @@ function draw() {
 }
 
 draw(); // 启动动画
+// =============================
+// 极淡灰色弹幕雨效果
+// =============================
+
+let bulletMessages = [];
+
+const bulletContainer = document.getElementById('bullets');
+
+function randomBetween(a, b) {
+  return a + Math.random() * (b - a);
+}
+
+function createBullet() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const msg = bulletMessages[Math.floor(Math.random() * bulletMessages.length)];
+  const div = document.createElement('div');
+  div.className = 'bullet';
+  div.innerText = msg;
+  // 字体大小随屏幕自适应
+  const fontSize = randomBetween(14 + Math.min(w, h) / 120, 20 + Math.min(w, h) / 60);
+  div.style.fontSize = fontSize + 'px';
+  // 横向随机
+  div.style.left = randomBetween(0, w - 120) + 'px';
+  // 动画持续时间随机
+  const duration = randomBetween(5.5, 7.5);
+  div.style.animationDuration = duration + 's';
+  // 纵向起点随机（可选）
+  div.style.top = randomBetween(-40, h * 0.2) + 'px';
+  // 透明度更淡
+  div.style.opacity = randomBetween(0.10, 0.18);
+  bulletContainer.appendChild(div);
+  // 动画结束后移除
+  div.addEventListener('animationend', () => {
+    bulletContainer.removeChild(div);
+  });
+}
+
+// 根据屏幕大小动态调整弹幕密集度
+function startBulletRain() {
+  let base = Math.max(900 - window.innerWidth * 0.3, 350); // 大屏更密集
+  createBullet();
+  setTimeout(startBulletRain, randomBetween(base, base + 600));
+}
+
+function fetchAndStartBullets() {
+  fetch('bulletmessages.yml')
+    .then(res => res.text())
+    .then(ymlText => {
+      const data = jsyaml.load(ymlText);
+      if (Array.isArray(data)) {
+        bulletMessages = data;
+        startBulletRain();
+      }
+    });
+}
+
+if (bulletContainer) fetchAndStartBullets();
 
 // =============================
 // 打字机效果
