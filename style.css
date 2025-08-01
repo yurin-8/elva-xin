@@ -1,3 +1,84 @@
+/* who-is-she-page 图片动画和布局 */
+.photo-group {
+  position: relative;
+  width: 100vw;
+  height: 60vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.who-photo {
+  position: absolute;
+  left: 12vw;
+  opacity: 0;
+  box-shadow: 0 8px 24px rgba(255,192,203,0.18);
+  border-radius: 18px;
+  transition: opacity 1.2s cubic-bezier(.4,0,.2,1), transform 1.2s cubic-bezier(.4,0,.2,1);
+}
+.who-photo-1 {
+  top: -60px;
+  width: 220px;
+  z-index: 2;
+  border: 5px solid #ffc1dc; /* 粉色边框 */
+  box-shadow: 0 0 0 8px #fff6fa, 0 8px 24px rgba(255,192,203,0.18);
+  animation: photoDropIn 1.2s ease forwards;
+  animation-delay: 0.3s;
+}
+.who-photo-2 {
+  top: 180px;
+  left: 7vw;
+  width: 160px;
+  z-index: 1;
+  transform: rotate(-8deg) scale(0.98);
+  border: 5px solid #222; /* 黑色边框 */
+  box-shadow: 0 0 0 8px #fff, 0 8px 24px rgba(120,120,120,0.10);
+  animation: photoCuteIn 1.2s ease forwards;
+  animation-delay: 1.3s;
+}
+@keyframes photoDropIn {
+  0% { opacity: 0; transform: translateY(-80px) scale(0.96); }
+  80% { opacity: 1; transform: translateY(0) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes photoCuteIn {
+  0% { opacity: 0; transform: rotate(-8deg) scale(0.8) translateY(-40px); }
+  80% { opacity: 1; transform: rotate(-8deg) scale(1.05) translateY(0); }
+  100% { opacity: 1; transform: rotate(-8deg) scale(0.98) translateY(0); }
+}
+/* 主内容区渐隐动画，按钮点击后文字淡出 */
+.main-content.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+/* "她是谁"页面淡入动画与隐藏显示切换 */
+.who-is-she-page.hidden {
+  display: none;
+}
+
+.who-is-she-page {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 99;
+  background: linear-gradient(90deg, #ffc1dc 0%, #fef6f9 100%);
+  color: #d33;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5em;
+  font-family: 'Quicksand', 'ZCOOL KuaiLe', sans-serif;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(255,192,203,0.12);
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+.who-is-she-page.show {
+  display: block;
+  opacity: 1;
+}
 /* 主内容区垂直排列，按钮始终在下方且不受文字高度影响 */
 .main-content {
   display: flex;
@@ -15,7 +96,7 @@
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 1;
+  z-index: 10;
 }
 .bullet {
   position: absolute;
@@ -118,6 +199,7 @@ canvas {
   top: 0;
   left: 0;
   pointer-events: none; /* 允许鼠标事件穿透，不影响页面交互 */
+  z-index: 11;
 }
 
 /* 引用样式，使用 ZCOOL KuaiLe 字体 */
@@ -161,14 +243,60 @@ canvas {
   font-family: 'Quicksand', sans-serif;
   box-shadow: 0 8px 15px rgba(255, 192, 203, 0.2);
   cursor: pointer;
-  z-index: 10;
-  transition: transform 0.6s ease-in-out, border-radius 0.6s ease-in-out;
-  transform-origin: center center;
-  border: none; /* 去掉黑边 */
+  z-index: 20;
+  border: none;
   outline: none;
+  transition: all 0.5s ease-in-out;
+  overflow: hidden;
 }
-/* 点击后扩散填满屏幕 */
-.button-bubble.expand {
-  transform: translate(-50%, 0) scale(50);
-  border-radius: 0;
+
+.button-bubble.hide-text {
+  color: transparent;
+}
+
+.button-bubble.expand-hole {
+  transform: translate(-50%, 0) scale(80);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ffc1dc, #ffe7ef); /* 与按钮一致的渐变粉色 */
+  transition: transform 1s ease-in-out;
+  z-index: 19;
+}
+
+/* 隐藏默认的第二页内容 */
+.who-is-she-page.hidden {
+  display: none;
+}
+.who-is-she-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 100vw;
+  height: 100vh;
+  background: #fef6f9;
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+  padding-top: 20vh;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+.who-is-she-page.show {
+  display: block;
+  opacity: 1;
+}
+
+/* 新增样式：who-is-she-page 标题和内容 */
+.who-is-she-page h1 {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 2.8em;
+  color: #70234b;
+  margin-bottom: 20px;
+}
+
+.who-is-she-page .content {
+  max-width: 600px;
+  margin: auto;
+  font-size: 1.2em;
+  line-height: 2em;
+  color: #444;
 }

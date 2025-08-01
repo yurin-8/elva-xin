@@ -15,11 +15,21 @@
     <h1 id="title">Elva · 歆语花间</h1>
     <!-- 打字机效果显示区 -->
     <p id="quote"></p>
-    <button class="button-bubble" onclick="expandAndNavigate()">她是谁？ Who is she?</button>
+    <button class="button-bubble" onclick="expandBubble(this)">她是谁？ Who is she?</button>
   </div>
   <!-- 樱花飘落canvas -->
   <canvas id="petals"></canvas>
 
+  <!-- who-is-she-page 区域，初始隐藏 -->
+  <div class="who-is-she-page hidden">
+    <div class="photo-group">
+      <img src="images/mmexport1754077551384.jpg" alt="照片2" class="who-photo who-photo-2">
+      <img src="images/mmexport1754077578218.jpg" alt="照片1" class="who-photo who-photo-1">
+      <div class="content">
+        <!-- 这里可以放介绍文字 -->
+      </div>
+    </div>
+  </div>
   <!-- 弹幕容器 -->
   <div id="bullets"></div>
 

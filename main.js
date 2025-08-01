@@ -1,4 +1,40 @@
 // =============================
+// 气泡按钮动画与页面切换
+// =============================
+
+// 页面加载时检查状态
+window.addEventListener('DOMContentLoaded', function() {
+  if (localStorage.getItem('whoIsSheRevealed') === '1') {
+    showWhoIsShePage();
+  }
+});
+
+function expandBubble(btn) {
+  const mainContent = document.querySelector('.main-content');
+  const whoPage = document.querySelector('.who-is-she-page');
+
+  btn.classList.add('hide-text');       // 文字渐隐
+  // 文字消失后再扩展气泡
+  setTimeout(() => {
+    mainContent.classList.add('fade-out'); // 主内容区淡出
+    btn.classList.add('expand-hole');     // 扩散洞口
+
+    // 保留樱花和弹幕雨特效，不做淡出和停止动画
+  }, 250); // 文字渐隐更快
+
+  setTimeout(() => {
+    whoPage.classList.add('show');        // 显示 Who is she 页
+    // 不再跳转页面，只展示 who-is-she-page 内容
+    localStorage.setItem('whoIsSheRevealed', '1'); // 记忆状态
+  }, 1100); // 扩散动画后显示页面
+}
+
+// 展示 who-is-she-page 的辅助函数
+function showWhoIsShePage() {
+  document.querySelector('.main-content').classList.add('fade-out');
+  document.querySelector('.who-is-she-page').classList.add('show');
+}
+// =============================
 // 简单樱花飘落特效
 // =============================
 
@@ -37,7 +73,9 @@ function draw() {
       p.x = Math.random() * width;
     }
   });
-  requestAnimationFrame(draw); // 循环动画
+  if (!window._stopEffects) {
+    requestAnimationFrame(draw); // 循环动画
+  }
 }
 
 draw(); // 启动动画
@@ -75,15 +113,19 @@ function createBullet() {
   bulletContainer.appendChild(div);
   // 动画结束后移除
   div.addEventListener('animationend', () => {
-    bulletContainer.removeChild(div);
+    if (!window._stopEffects) {
+      bulletContainer.removeChild(div);
+    }
   });
 }
 
 // 根据屏幕大小动态调整弹幕密集度
 function startBulletRain() {
   let base = Math.max(900 - window.innerWidth * 0.3, 350); // 大屏更密集
-  createBullet();
-  setTimeout(startBulletRain, randomBetween(base, base + 600));
+  if (!window._stopEffects) {
+    createBullet();
+    setTimeout(startBulletRain, randomBetween(base, base + 600));
+  }
 }
 
 function fetchAndStartBullets() {
@@ -177,10 +219,10 @@ fetch("quotes.yml")
 // 按钮扩展动画
 // =============================
 
-function expandAndNavigate() {
-  const button = document.querySelector('.button-bubble');
-  button.classList.add('expand');
-  setTimeout(() => {
-    window.location.href = 'who-is-she.html'; // 或你指定的页面
-  }, 600);
-}
+// function expandAndNavigate() {
+//   const button = document.querySelector('.button-bubble');
+//   button.classList.add('expand');
+//   setTimeout(() => {
+//     window.location.href = 'who-is-she.html'; // 或你指定的页面
+//   }, 600);
+// }
