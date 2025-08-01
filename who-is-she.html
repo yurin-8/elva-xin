@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>她是谁 · Who is she?</title>
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fef6f9;
+      font-family: 'Quicksand', sans-serif;
+      color: #444;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-family: 'ZCOOL KuaiLe', cursive;
+      font-size: 2.8em;
+      margin-bottom: 30px;
+      color: #70234b;
+    }
+
+    .content {
+      max-width: 600px;
+      font-size: 1.2em;
+      line-height: 2em;
+      padding: 0 20px;
+    }
+
+    .content span {
+      color: #e26a8c;
+      font-weight: bold;
+    }
+
+    .back-button {
+      margin-top: 40px;
+      padding: 10px 20px;
+      background: #ffd6e8;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1em;
+      color: #70234b;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background: #ffb6d4;
+    }
+  </style>
+</head>
+<body>
+  <h1>她是谁？<br>Who is she?</h1>
+  <div class="content">
+    她是那个<br>
+    明明什么都没说，但一个眼神就让我秒懂心情的人。<br><br>
+    她是那个<br>
+    偶尔有点小傲娇，但转身又会偷偷关心别人的人。<br><br>
+    她是那个<br>
+    总觉得自己很普通，却在我眼里 <span>无可取代</span> 的人。<br><br>
+    她是她。<br>
+    <span>我眼中最特别的那一个。</span>
+  </div>
+  <button class="back-button" onclick="window.history.back()">← 返回</button>
+</body>
+</html>

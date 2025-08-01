@@ -172,3 +172,15 @@ fetch("quotes.yml")
     configList = data;
     playAllQuotes();
   });
+
+// =============================
+// 按钮扩展动画
+// =============================
+
+function expandAndNavigate() {
+  const button = document.querySelector('.button-bubble');
+  button.classList.add('expand');
+  setTimeout(() => {
+    window.location.href = 'who-is-she.html'; // 或你指定的页面
+  }, 600);
+}

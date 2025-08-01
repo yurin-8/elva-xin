@@ -1,3 +1,12 @@
+/* 主内容区垂直排列，按钮始终在下方且不受文字高度影响 */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 60vh;
+  margin-top: 0;
+}
 /* 弹幕样式：极淡灰色，无发光 */
 #bullets {
   position: fixed;
@@ -62,7 +71,40 @@ p {
   color: #555;            /* 深灰色 */
   overflow: hidden;       /* 隐藏溢出 */
   white-space: nowrap;    /* 不换行 */
-  margin: 20px auto;      /* 上下间距，水平居中 */
+  margin: 20px auto 0 auto; /* 只设置上间距，底部无间距 */
+}
+
+/* "她是谁"按钮样式，固定在打字机区下方且不受文字高度影响 */
+/* 让按钮浮动在固定位置，不被其他元素推下去 */
+button[onclick*='#whoIsShe'] {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 40px;
+  background: linear-gradient(145deg, #ffc1dc, #ffe7ef);
+  color: #70234b;
+  font-family: 'Quicksand', sans-serif;
+  box-shadow: 0 8px 15px rgba(255, 192, 203, 0.2);
+  transition: all 0.3s ease;
+  z-index: 10;
+  animation: breathing 4s ease-in-out infinite;
+}
+
+button[onclick*='#whoIsShe']:hover {
+  background: linear-gradient(145deg, #ff9ebf, #ffc1dc);
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 10px 18px rgba(255, 105, 135, 0.3);
+}
+
+/* 呼吸动画 */
+@keyframes breathing {
+  0%   { transform: translateX(-50%) scale(1); }
+  50%  { transform: translateX(-50%) scale(1.06); }
+  100% { transform: translateX(-50%) scale(1); }
 }
 
 /* 标题淡入关键帧动画 */
@@ -81,6 +123,12 @@ canvas {
 /* 引用样式，使用 ZCOOL KuaiLe 字体 */
 #quote {
   font-family: 'ZCOOL KuaiLe', cursive;
+  max-height: 40vh;
+  overflow: hidden;
+  padding-bottom: 80px; /* 给文字区底部腾出空间，防止文字被按钮挡住 */
+  white-space: normal; /* 允许文字自动换行 */
+  line-height: 1.8em;
+  text-align: center;
 }
 
 #title {
@@ -98,4 +146,29 @@ canvas {
   0%   { transform: translateY(0); }
   50%  { transform: translateY(-4px); }
   100% { transform: translateY(0); }
+}
+
+/* "她是谁"气泡按钮样式，固定在页面底部居中，带有渐变、圆角和扩展动画，无黑边 */
+.button-bubble {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 28px;
+  border-radius: 40px;
+  background: linear-gradient(145deg, #ffc1dc, #ffe7ef);
+  color: #70234b;
+  font-family: 'Quicksand', sans-serif;
+  box-shadow: 0 8px 15px rgba(255, 192, 203, 0.2);
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.6s ease-in-out, border-radius 0.6s ease-in-out;
+  transform-origin: center center;
+  border: none; /* 去掉黑边 */
+  outline: none;
+}
+/* 点击后扩散填满屏幕 */
+.button-bubble.expand {
+  transform: translate(-50%, 0) scale(50);
+  border-radius: 0;
 }
