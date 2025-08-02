@@ -16,24 +16,23 @@
   transition: opacity 1.2s cubic-bezier(.4,0,.2,1), transform 1.2s cubic-bezier(.4,0,.2,1);
 }
 .who-photo-1 {
-  top: -60px;
-  width: 220px;
+  top: -60px;         /* 距离父容器顶部 -60px */
+  left: 28vw;         /* 向右移动，整体更居中 */
+  width: 320px;       /* 放大主照片 */
   z-index: 2;
   border: 5px solid #ffc1dc; /* 粉色边框 */
-  box-shadow: 0 0 0 8px #fff6fa, 0 8px 24px rgba(255,192,203,0.18);
   animation: photoDropIn 1.2s ease forwards;
-  animation-delay: 0.3s;
+  animation-delay: 1.3s;
 }
 .who-photo-2 {
-  top: 180px;
-  left: 7vw;
-  width: 160px;
+  top: 180px;         /* 距离顶部 180px */
+  left: 18vw;         /* 向右移动，整体更居中 */
+  width: 220px;       /* 放大次要照片 */
   z-index: 1;
   transform: rotate(-8deg) scale(0.98);
   border: 5px solid #222; /* 黑色边框 */
-  box-shadow: 0 0 0 8px #fff, 0 8px 24px rgba(120,120,120,0.10);
   animation: photoCuteIn 1.2s ease forwards;
-  animation-delay: 1.3s;
+  animation-delay: 0.3s;
 }
 @keyframes photoDropIn {
   0% { opacity: 0; transform: translateY(-80px) scale(0.96); }
