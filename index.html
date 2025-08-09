@@ -11,23 +11,34 @@
 </head>
 <body>
   <div class="main-content">
+    <div class="main-content-text"></div>
     <!-- 页面主标题 -->
     <h1 id="title">Elva · 歆语花间</h1>
     <!-- 打字机效果显示区 -->
     <p id="quote"></p>
+    </div>  
+    <div class="main-content-buttons">
     <button class="button-bubble" onclick="expandBubble(this)">她是谁？ Who is she?</button>
+    </div>
   </div>
   <!-- 樱花飘落canvas -->
   <canvas id="petals"></canvas>
 
   <!-- who-is-she-page 区域，初始隐藏 -->
   <div class="who-is-she-page hidden">
+    <button class="back-home-btn" onclick="hideWhoIsShePage()">🏠 返回</button>
     <div class="photo-group">
       <img src="images/mmexport1754077551384.jpg" alt="照片2" class="who-photo who-photo-2">
       <img src="images/mmexport1754077578218.jpg" alt="照片1" class="who-photo who-photo-1">
       <div class="content">
         <!-- 这里可以放介绍文字 -->
       </div>
+    </div>
+    <div class="chat-bubbles">
+      <div class="chat-bubble"> “艾歆” </div>
+      <div class="chat-bubble"> “我印尼名字叫Elva” </div>
+      <div class="chat-bubble"> “我可以和你们出去玩吗？” </div>
+      <!-- 可以添加更多气泡 -->
     </div>
   </div>
   <!-- 弹幕容器 -->

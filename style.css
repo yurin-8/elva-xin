@@ -1,12 +1,20 @@
 /* who-is-she-page 图片动画和布局 */
 .photo-group {
-  position: relative;
-  width: 100vw;
-  height: 60vh;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: flex-start;   /* 左对齐，照片和气泡在一行 */
+  align-items: center;           /* 垂直居中，气泡和主照片居中对齐 */
+  gap: 36px;                     /* 照片和气泡之间的间距加大 */
+  flex-wrap: nowrap;             /* 默认不换行，气泡在照片右侧 */
+  position: relative;
+  max-width: 100%;
 }
+/* 照片的容器 */
+.photo-container {
+  position: relative;
+  z-index: 2;  /* 保证照片位于气泡之上 */
+}
+
 .who-photo {
   position: absolute;
   left: 12vw;
@@ -44,40 +52,115 @@
   80% { opacity: 1; transform: rotate(-8deg) scale(1.05) translateY(0); }
   100% { opacity: 1; transform: rotate(-8deg) scale(0.98) translateY(0); }
 }
+
+.chat-bubbles {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+  margin-top: 0;
+  padding-left: 0;
+  justify-content: center;
+}
+
+.chat-bubble {
+  background: linear-gradient(90deg, #ffe6f0 0%, #e0f7fa 100%);
+  border-radius: 22px 22px 22px 8px;
+  box-shadow: 0 4px 16px rgba(220, 120, 180, 0.10), 0 1.5px 6px rgba(0,0,0,0.04);
+  padding: 14px 28px;
+  font-size: 1.18em;
+  color: #444;
+  max-width: 340px;
+  position: relative;
+  border: 1.5px solid #f8bbd0;
+  letter-spacing: 0.5px;
+  transition: box-shadow 0.3s, transform 0.3s;
+  animation: bubbleIn 0.7s cubic-bezier(.4,0,.2,1) forwards;
+  opacity: 0;
+}
+
+.chat-bubble:hover {
+  box-shadow: 0 8px 32px rgba(220, 120, 180, 0.18), 0 2px 8px rgba(0,0,0,0.08);
+  transform: scale(1.04);
+}
+
+.chat-bubble::after {
+  content: '';
+  position: absolute;
+  left: 18px;
+  bottom: -12px;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #ffe6f0 60%, #e0f7fa 100%);
+  border-bottom-left-radius: 8px;
+  box-shadow: 0 2px 8px rgba(220, 120, 180, 0.08);
+  transform: rotate(15deg);
+  z-index: 0;
+}
+
+@keyframes bubbleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1.04) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
 /* 主内容区渐隐动画，按钮点击后文字淡出 */
-.main-content.fade-out {
+.fade-out {
   opacity: 0;
   transition: opacity 0.5s ease-out;
 }
 /* "她是谁"页面淡入动画与隐藏显示切换 */
-.who-is-she-page.hidden {
+.hidden {
   display: none;
 }
 
+/* who-is-she-page 相关样式集中 */
 .who-is-she-page {
-  position: fixed;
-  top: 18px;
-  left: 18px;
-  z-index: 99;
-  background: linear-gradient(90deg, #ffc1dc 0%, #fef6f9 100%);
-  color: #d33;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.5em;
-  font-family: 'Quicksand', 'ZCOOL KuaiLe', sans-serif;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(255,192,203,0.12);
-  cursor: pointer;
-  transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 100vw;
+  height: 100vh;
+  background: #fef6f9;
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+  padding-top: 20vh;
+  opacity: 0;
+  transition: opacity 1.5s ease;
 }
 .who-is-she-page.show {
   display: block;
   opacity: 1;
 }
+.who-is-she-page.hidden {
+  display: none;
+}
+.who-is-she-page h1 {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 2.8em;
+  color: #70234b;
+  margin-bottom: 20px;
+}
+.who-is-she-page .content {
+  max-width: 600px;
+  margin: auto;
+  font-size: 1.2em;
+  line-height: 2em;
+  color: #444;
+}
+
+
 /* 主内容区垂直排列，按钮始终在下方且不受文字高度影响 */
 .main-content {
   display: flex;
@@ -87,6 +170,11 @@
   min-height: 60vh;
   margin-top: 0;
 }
+
+
+
+
+
 /* 弹幕样式：极淡灰色，无发光 */
 #bullets {
   position: fixed;
@@ -247,6 +335,7 @@ canvas {
   outline: none;
   transition: all 0.5s ease-in-out;
   overflow: hidden;
+  user-select: none; /* 禁止复制按钮文字 */
 }
 
 .button-bubble.hide-text {
@@ -254,12 +343,14 @@ canvas {
 }
 
 .button-bubble.expand-hole {
-  transform: translate(-50%, 0) scale(80);
+  transform: translate(-50%, 0) scale(80);  /* 扩展到屏幕 */
+  opacity: 1;  /* 初始不透明 */
   border-radius: 50%;
-  background: linear-gradient(145deg, #ffc1dc, #ffe7ef); /* 与按钮一致的渐变粉色 */
-  transition: transform 1s ease-in-out;
+  background: linear-gradient(145deg, #ffc1dc, #ffe7ef); /* 粉色渐变 */
+  transition: transform 1s ease-in-out, opacity 1s ease-in-out; /* 添加透明度动画 */
   z-index: 19;
 }
+
 
 /* 隐藏默认的第二页内容 */
 .who-is-she-page.hidden {
@@ -299,3 +390,63 @@ canvas {
   line-height: 2em;
   color: #444;
 }
+
+/* 返回主页按钮样式，卡通风格并固定在左上角 */
+.back-home-btn {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 100;
+  background: linear-gradient(135deg, #ffe7ef 60%, #ffc1dc 100%);
+  color: #70234b;
+  font-family: 'ZCOOL KuaiLe', 'Quicksand', cursive, sans-serif;
+  font-size: 1em;         /* 缩小字体 */
+  border: none;
+  border-radius: 50px;
+  padding: 6px 14px;      /* 缩小内边距 */
+  box-shadow: 0 4px 12px rgba(255,192,203,0.18);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.back-home-btn:hover {
+  background: linear-gradient(135deg, #ffc1dc 60%, #ff9ebf 100%);
+  transform: scale(1.08);
+}
+
+/* who 页面向下滑出 */
+.slide-down-out {
+  animation: slideDownOut 0.8s ease forwards;
+}
+
+@keyframes slideDownOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+/* main 页面从上滑入 */
+.slide-up-in {
+  animation: slideUpIn 0.8s ease forwards;
+}
+
+@keyframes slideUpIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
