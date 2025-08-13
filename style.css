@@ -1,12 +1,14 @@
+/* 统一变量方便调位置与宽度 */
+:root{
+  --photo-left: 12vw;            /* 照片的 left (你原本就有) */
+  --photo-width: 420px;          /* 照片宽度：按你的实际宽度填 */
+  --gap: 200px;                   /* 照片与气泡之间的间距 */
+}
+
 /* who-is-she-page 图片动画和布局 */
 .photo-group {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;   /* 左对齐，照片和气泡在一行 */
-  align-items: center;           /* 垂直居中，气泡和主照片居中对齐 */
-  gap: 36px;                     /* 照片和气泡之间的间距加大 */
-  flex-wrap: nowrap;             /* 默认不换行，气泡在照片右侧 */
-  position: relative;
+  position: relative;            /* 关键：作为绝对定位参照 */
+  /* 其余布局交给子元素绝对定位 */
   max-width: 100%;
 }
 /* 照片的容器 */
@@ -17,7 +19,8 @@
 
 .who-photo {
   position: absolute;
-  left: 12vw;
+  left: var(--photo-left);
+  width: var(--photo-width);     /* 确保我们能计算右侧位置 */
   opacity: 0;
   box-shadow: 0 8px 24px rgba(255,192,203,0.18);
   border-radius: 18px;
@@ -58,9 +61,28 @@
   flex-direction: column;
   gap: 18px;
   align-items: flex-start;
-  margin-top: 0;
-  padding-left: 0;
-  justify-content: center;
+  position: absolute;
+  top: 35%;
+  transform: translateY(-45%);
+  left: calc(50vw); /* 420px 是图片宽度，20px 是间距 */
+}
+/* 窄屏：改为自然流，自动落到照片下方 */
+@media (max-width: 768px){
+  .who-photo{
+    position: static;            /* 让两者回到正常流 */
+    width: min(90vw, var(--photo-width));
+    opacity: 1;
+  }
+  .chat-bubbles{
+    position: static;
+    margin-top: 12px;
+    left: auto;
+  }
+  .photo-group{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .chat-bubble {
